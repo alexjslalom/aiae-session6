@@ -8,6 +8,13 @@
 
 **Input**: User description: "Support for Overdue Todo Items - Users need a clear, visual way to identify which todos have not been completed by their due date, so they can prioritize their work and quickly see which tasks are past their due date."
 
+## Clarifications
+
+### Session 2026-08-11
+
+- Q: Should the overdue indicator update automatically while the app sits open overnight (e.g., right at midnight), or only recompute the next time the list naturally re-renders? → A: Passive recompute only: overdue status is recalculated when the list re-renders due to a user action (add/edit/delete/toggle) or a page load/refresh. No background timer.
+- Q: Should overdue todos be reordered or grouped to the top of the list, or should the existing creation-date ordering remain unchanged? → A: Keep existing order (creation date, newest first). Overdue is a purely visual indicator with no reordering.
+
 ## User Scenarios & Testing *(mandatory)*
 
 ### User Story 1 - Spot overdue todos at a glance (Priority: P1)
@@ -60,6 +67,8 @@ As a todo application user, I want todos with no due date set to never display a
 - A todo due today is treated as not yet overdue (still on time until the day passes).
 - Editing a todo's due date to a past date while incomplete causes it to become overdue immediately; editing it to a future or empty date removes the overdue indicator immediately.
 - Toggling a todo from complete back to incomplete re-evaluates overdue status based on its due date at that moment.
+- If the app is left open overnight with no user interaction, a todo's overdue status is not required to update until the next list re-render (e.g., a user action such as add/edit/delete/toggle, or a page load/refresh); no background timer is required.
+- The overdue indicator does not change the todo list's ordering; todos remain sorted by creation date (newest first) regardless of overdue status.
 
 ## Requirements *(mandatory)*
 
@@ -69,9 +78,10 @@ As a todo application user, I want todos with no due date set to never display a
 - **FR-002**: System MUST NOT apply the overdue indicator to any todo marked complete, regardless of its due date.
 - **FR-003**: System MUST NOT apply the overdue indicator to any todo that has no due date set.
 - **FR-004**: System MUST treat a todo due on the current date as not overdue.
-- **FR-005**: System MUST recompute a todo's overdue status whenever its due date, title, or completion status changes, and on each view of the list (no stale/manually-set overdue flag).
+- **FR-005**: System MUST recompute a todo's overdue status whenever its due date, title, or completion status changes, and on each render of the list (no stale/manually-set overdue flag); recomputation is triggered by user actions (add/edit/delete/toggle) or a page load/refresh, not by a background timer.
 - **FR-006**: The overdue indicator MUST be visible directly in the todo list view without requiring the user to open or hover over the todo.
 - **FR-007**: The overdue indicator MUST be distinguishable without relying on color alone (e.g., accompanying text or icon), consistent with the application's accessibility requirements.
+- **FR-008**: The overdue indicator MUST NOT change the todo list's ordering; the existing creation-date (newest first) ordering is preserved regardless of overdue status.
 
 ### Key Entities
 
