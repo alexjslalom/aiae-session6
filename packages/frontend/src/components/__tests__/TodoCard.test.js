@@ -99,4 +99,60 @@ describe('TodoCard Component', () => {
     
     expect(screen.queryByText(/Due:/)).not.toBeInTheDocument();
   });
+
+  describe('overdue indicator', () => {
+    const toISODate = (date) => date.toISOString().slice(0, 10);
+    const yesterday = new Date();
+    yesterday.setDate(yesterday.getDate() - 1);
+    const today = new Date();
+    const tomorrow = new Date();
+    tomorrow.setDate(tomorrow.getDate() + 1);
+
+    it('should render the overdue indicator for an incomplete todo with a past due date', () => {
+      const overdueTodo = { ...mockTodo, dueDate: toISODate(yesterday), completed: 0 };
+      render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.getByText(/Overdue/)).toBeInTheDocument();
+    });
+
+    it('should not render the overdue indicator for a todo due today', () => {
+      const dueTodayTodo = { ...mockTodo, dueDate: toISODate(today), completed: 0 };
+      render(<TodoCard todo={dueTodayTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('should not render the overdue indicator for a todo with a future due date', () => {
+      const futureTodo = { ...mockTodo, dueDate: toISODate(tomorrow), completed: 0 };
+      render(<TodoCard todo={futureTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('should not render the overdue indicator for a completed todo with a past due date', () => {
+      const completedOverdueTodo = { ...mockTodo, dueDate: toISODate(yesterday), completed: 1 };
+      render(<TodoCard todo={completedOverdueTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('should remove the overdue indicator when a todo is toggled from incomplete to completed', () => {
+      const overdueTodo = { ...mockTodo, dueDate: toISODate(yesterday), completed: 0 };
+      const { rerender } = render(<TodoCard todo={overdueTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.getByText(/Overdue/)).toBeInTheDocument();
+
+      const completedTodo = { ...overdueTodo, completed: 1 };
+      rerender(<TodoCard todo={completedTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+
+    it('should not render the overdue indicator for an incomplete todo with no due date', () => {
+      const noDueDateTodo = { ...mockTodo, dueDate: null, completed: 0 };
+      render(<TodoCard todo={noDueDateTodo} {...mockHandlers} isLoading={false} />);
+
+      expect(screen.queryByText(/Overdue/)).not.toBeInTheDocument();
+    });
+  });
 });

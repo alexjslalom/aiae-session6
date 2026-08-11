@@ -31,7 +31,7 @@ Existing web app monorepo — all paths below are under `packages/frontend/src/`
 
 **Purpose**: Prepare the new `utils/` module location; no new dependencies or config required.
 
-- [ ] T001 Create `packages/frontend/src/utils/` directory and `packages/frontend/src/utils/__tests__/` directory (no dependencies to install; React/Jest/RTL already configured per plan.md)
+- [X] T001 Create `packages/frontend/src/utils/` directory and `packages/frontend/src/utils/__tests__/` directory (no dependencies to install; React/Jest/RTL already configured per plan.md)
 
 **Checkpoint**: Directory structure ready for the foundational utility.
 
@@ -43,8 +43,8 @@ Existing web app monorepo — all paths below are under `packages/frontend/src/`
 
 **⚠️ CRITICAL**: No user story work can begin until this phase is complete.
 
-- [ ] T002 [P] Write unit tests for `isOverdue(todo, referenceDate)` in `packages/frontend/src/utils/__tests__/todoStatus.test.js` covering the full truth table from [data-model.md](./data-model.md): incomplete+past date → `true`; incomplete+today → `false`; incomplete+future → `false`; incomplete+no dueDate → `false`; completed+past date → `false` (ensure tests FAIL before T003)
-- [ ] T003 Implement `isOverdue(todo, referenceDate = new Date())` pure function per [contracts/isOverdue-utility.md](./contracts/isOverdue-utility.md) in `packages/frontend/src/utils/todoStatus.js` (day-level/calendar-date comparison in local timezone; no mutation, no side effects) — makes T002 pass
+- [X] T002 [P] Write unit tests for `isOverdue(todo, referenceDate)` in `packages/frontend/src/utils/__tests__/todoStatus.test.js` covering the full truth table from [data-model.md](./data-model.md): incomplete+past date → `true`; incomplete+today → `false`; incomplete+future → `false`; incomplete+no dueDate → `false`; completed+past date → `false` (ensure tests FAIL before T003)
+- [X] T003 Implement `isOverdue(todo, referenceDate = new Date())` pure function per [contracts/isOverdue-utility.md](./contracts/isOverdue-utility.md) in `packages/frontend/src/utils/todoStatus.js` (day-level/calendar-date comparison in local timezone; no mutation, no side effects) — makes T002 pass
 
 **Checkpoint**: `isOverdue` is implemented and fully unit-tested — user story implementation can now begin.
 
@@ -61,14 +61,14 @@ future does not.
 
 ### Tests for User Story 1
 
-- [ ] T004 [P] [US1] Add `TodoCard` test cases in `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting: an incomplete todo with a past `dueDate` renders the overdue indicator (e.g., `screen.getByText(/Overdue/)`), a todo due today does not render it, and a todo with a future `dueDate` does not render it (ensure tests FAIL before T005-T006)
+- [X] T004 [P] [US1] Add `TodoCard` test cases in `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting: an incomplete todo with a past `dueDate` renders the overdue indicator (e.g., `screen.getByText(/Overdue/)`), a todo due today does not render it, and a todo with a future `dueDate` does not render it (ensure tests FAIL before T005-T006)
 
 ### Implementation for User Story 1
 
-- [ ] T005 [US1] Import `isOverdue` from `../utils/todoStatus` in `packages/frontend/src/components/TodoCard.js` and compute `const overdue = isOverdue(todo);` in the non-editing render branch (depends on T003)
-- [ ] T006 [US1] Render a text+icon overdue indicator (e.g., "⚠ Overdue") in `todo-content` next to/below the due date in `packages/frontend/src/components/TodoCard.js` when `overdue` is `true`, and conditionally add an `overdue` class to the `todo-card` div (e.g., `` `todo-card ${todo.completed ? 'completed' : ''} ${overdue ? 'overdue' : ''}` ``) (depends on T005)
-- [ ] T007 [P] [US1] Add `.todo-card.overdue` and overdue indicator styles in `packages/frontend/src/styles/theme.css`, reusing the existing `--danger-color` token (no new color tokens) for both light and dark theme sections
-- [ ] T008 [US1] Verify `packages/frontend/src/components/TodoList.js` requires no changes — confirm list ordering by `createdAt` is unaffected by the new `overdue` class/indicator (read-only verification, no reordering logic added)
+- [X] T005 [US1] Import `isOverdue` from `../utils/todoStatus` in `packages/frontend/src/components/TodoCard.js` and compute `const overdue = isOverdue(todo);` in the non-editing render branch (depends on T003)
+- [X] T006 [US1] Render a text+icon overdue indicator (e.g., "⚠ Overdue") in `todo-content` next to/below the due date in `packages/frontend/src/components/TodoCard.js` when `overdue` is `true`, and conditionally add an `overdue` class to the `todo-card` div (e.g., `` `todo-card ${todo.completed ? 'completed' : ''} ${overdue ? 'overdue' : ''}` ``) (depends on T005)
+- [X] T007 [P] [US1] Add `.todo-card.overdue` and overdue indicator styles in `packages/frontend/src/styles/theme.css`, reusing the existing `--danger-color` token (no new color tokens) for both light and dark theme sections
+- [X] T008 [US1] Verify `packages/frontend/src/components/TodoList.js` requires no changes — confirm list ordering by `createdAt` is unaffected by the new `overdue` class/indicator (read-only verification, no reordering logic added)
 
 **Checkpoint**: User Story 1 is fully functional and independently testable — MVP deliverable.
 
@@ -85,11 +85,11 @@ indicator.
 
 ### Tests for User Story 2
 
-- [ ] T009 [P] [US2] Add `TodoCard` test cases in `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting a completed todo (`completed: 1`) with a past `dueDate` does NOT render the overdue indicator, and that toggling `completed` from `0`→`1` on re-render removes the indicator (ensure tests FAIL before confirming behavior)
+- [X] T009 [P] [US2] Add `TodoCard` test cases in `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting a completed todo (`completed: 1`) with a past `dueDate` does NOT render the overdue indicator, and that toggling `completed` from `0`→`1` on re-render removes the indicator (ensure tests FAIL before confirming behavior)
 
 ### Implementation for User Story 2
 
-- [ ] T010 [US2] Confirm `isOverdue`'s `completed` short-circuit (already implemented in T003 per [data-model.md](./data-model.md) truth table) correctly covers this story end-to-end via `TodoCard`'s existing `handleToggle`/re-render flow in `packages/frontend/src/components/TodoCard.js` — no additional production code expected beyond T005-T006; fix if T009 reveals a gap
+- [X] T010 [US2] Confirm `isOverdue`'s `completed` short-circuit (already implemented in T003 per [data-model.md](./data-model.md) truth table) correctly covers this story end-to-end via `TodoCard`'s existing `handleToggle`/re-render flow in `packages/frontend/src/components/TodoCard.js` — no additional production code expected beyond T005-T006; fix if T009 reveals a gap
 
 **Checkpoint**: User Stories 1 AND 2 both work independently — completed todos never flagged overdue.
 
@@ -103,11 +103,11 @@ indicator.
 
 ### Tests for User Story 3
 
-- [ ] T011 [P] [US3] Add `TodoCard` test case in `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting an incomplete todo with `dueDate: null` does NOT render the overdue indicator (ensure test FAILS before confirming behavior)
+- [X] T011 [P] [US3] Add `TodoCard` test case in `packages/frontend/src/components/__tests__/TodoCard.test.js` asserting an incomplete todo with `dueDate: null` does NOT render the overdue indicator (ensure test FAILS before confirming behavior)
 
 ### Implementation for User Story 3
 
-- [ ] T012 [US3] Confirm `isOverdue`'s `dueDate` presence check (already implemented in T003 per [data-model.md](./data-model.md) truth table) correctly covers this story via `TodoCard`'s existing conditional rendering in `packages/frontend/src/components/TodoCard.js` — no additional production code expected beyond T005-T006; fix if T011 reveals a gap
+- [X] T012 [US3] Confirm `isOverdue`'s `dueDate` presence check (already implemented in T003 per [data-model.md](./data-model.md) truth table) correctly covers this story via `TodoCard`'s existing conditional rendering in `packages/frontend/src/components/TodoCard.js` — no additional production code expected beyond T005-T006; fix if T011 reveals a gap
 
 **Checkpoint**: All user stories are independently functional — full feature complete.
 
@@ -117,8 +117,8 @@ indicator.
 
 **Purpose**: Final validation across all user stories.
 
-- [ ] T013 [P] Run `npm test --workspace=packages/frontend` and confirm ≥80% coverage is maintained per [docs/testing-guidelines.md](../../docs/testing-guidelines.md) and constitution Principle II
-- [ ] T014 Execute the manual validation scenarios in [quickstart.md](./quickstart.md) against a running app (`npm run start`) to confirm all 7 scenarios pass end-to-end
+- [X] T013 [P] Run `npm test --workspace=packages/frontend` and confirm ≥80% coverage is maintained per [docs/testing-guidelines.md](../../docs/testing-guidelines.md) and constitution Principle II
+- [X] T014 Execute the manual validation scenarios in [quickstart.md](./quickstart.md) against a running app (`npm run start`) to confirm all 7 scenarios pass end-to-end
 
 ---
 
